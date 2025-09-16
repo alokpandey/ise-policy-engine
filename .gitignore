@@ -1,7 +1,9 @@
-# Documentation files
-*.md
+# Documentation files (exclude README.md)
 *.docx
 *.drawio
+# Allow README.md but exclude other markdown files
+*.md
+!README.md
 
 # Log files
 logs/
