@@ -1,0 +1,182 @@
+# Cisco ISE AI Network Simulator Configuration
+
+server:
+  port: 8080
+
+spring:
+  application:
+    name: cisco-ise-ai-simulator
+
+  # Database configuration (using H2 for simplicity in simulator)
+  datasource:
+    url: jdbc:h2:mem:simulator
+    driver-class-name: org.h2.Driver
+    username: sa
+    password:
+
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    show-sql: false
+    properties:
+      hibernate:
+        format_sql: true
+
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+
+  # Scheduler configuration
+  task:
+    scheduling:
+      pool:
+        size: 5
+      thread-name-prefix: "simulator-"
+
+# Simulator Configuration
+simulator:
+  # Basic settings
+  interval: 15                   # Update interval in seconds
+  device-count: 10               # Number of devices to simulate
+  scenario: office               # Network scenario (office, campus, datacenter, healthcare, manufacturing, retail)
+  enabled: true                  # Enable/disable simulator
+  
+  # Feature toggles
+  policy-recommendations-enabled: true
+  threat-detection-enabled: true
+  risk-score-updates-enabled: true
+  
+  # Event generation probabilities
+  security-incident-probability: 0.1    # 10% chance of security incidents
+  network-event-probability: 0.2        # 20% chance of network events
+  max-events-per-cycle: 10              # Maximum events per simulation cycle
+  
+  # Logging
+  verbose-logging: false
+  
+  # Device distribution by scenario (percentages)
+  device-distribution:
+    office:
+      laptop-percentage: 40
+      mobile-percentage: 20
+      tablet-percentage: 15
+      server-percentage: 10
+      iot-percentage: 10
+      other-percentage: 5
+    
+    campus:
+      laptop-percentage: 35
+      mobile-percentage: 25
+      tablet-percentage: 20
+      server-percentage: 10
+      iot-percentage: 5
+      other-percentage: 5
+    
+    datacenter:
+      laptop-percentage: 10
+      mobile-percentage: 5
+      tablet-percentage: 5
+      server-percentage: 70
+      iot-percentage: 5
+      other-percentage: 5
+    
+    healthcare:
+      laptop-percentage: 30
+      mobile-percentage: 15
+      tablet-percentage: 10
+      server-percentage: 15
+      iot-percentage: 20
+      other-percentage: 10
+    
+    manufacturing:
+      laptop-percentage: 20
+      mobile-percentage: 10
+      tablet-percentage: 5
+      server-percentage: 20
+      iot-percentage: 35
+      other-percentage: 10
+    
+    retail:
+      laptop-percentage: 25
+      mobile-percentage: 20
+      tablet-percentage: 15
+      server-percentage: 10
+      iot-percentage: 20
+      other-percentage: 10
+
+# Logging configuration
+logging:
+  level:
+    com.cisco.ise.ai.simulator: INFO
+    com.cisco.ise.ai: DEBUG
+    org.springframework.scheduling: WARN
+    org.hibernate: WARN
+  
+  pattern:
+    console: "%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n"
+    file: "%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{50} - %msg%n"
+  
+  file:
+    name: logs/simulator.log
+    max-size: 10MB
+    max-history: 5
+
+# Management endpoints for monitoring
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics,prometheus
+      base-path: /actuator
+  
+  endpoint:
+    health:
+      show-details: always
+    metrics:
+      enabled: true
+  
+  metrics:
+    export:
+      prometheus:
+        enabled: true
+
+# OpenAI Configuration (disabled for simulator)
+openai:
+  api:
+    enabled: false
+    key: "disabled-in-simulator"
+    model: "gpt-4"
+    max-tokens: 1000
+    temperature: 0.7
+
+# ISE Configuration (mock for simulator)
+ise:
+  client:
+    base-url: "https://mock-ise-server:9060"
+    username: "simulator"
+    password: "simulator"
+    trust-all-certs: true
+    connection-timeout: 30000
+    read-timeout: 60000
+    enabled: false  # Disabled for simulator
+
+# Scheduler configuration moved to main spring section above
+
+# Application info
+info:
+  app:
+    name: Cisco ISE AI Network Simulator
+    description: Generates realistic network data for AI policy management demonstration
+    version: 1.0.0
+    author: Cisco ISE AI Team
+  
+  simulator:
+    purpose: "POC Demonstration"
+    capabilities:
+      - "Device simulation with realistic behavior patterns"
+      - "Network event generation based on risk profiles"
+      - "Security incident simulation"
+      - "AI policy recommendation triggers"
+      - "Real-time risk score updates"
+      - "Multi-scenario support (office, campus, datacenter, etc.)"

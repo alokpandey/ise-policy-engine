@@ -1,0 +1,28 @@
+spring:
+  datasource:
+    url: jdbc:h2:mem:testdb
+    driver-class-name: org.h2.Driver
+    username: sa
+    password: password
+  
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    show-sql: false
+  
+  security:
+    user:
+      name: test
+      password: test
+      roles: ADMIN
+
+# OpenAI Configuration - Disabled for tests
+openai:
+  api:
+    key: # Empty key to disable OpenAI services in tests
+    timeout: 60
+
+logging:
+  level:
+    com.cisco.ise.ai: DEBUG
+    org.springframework.security: WARN

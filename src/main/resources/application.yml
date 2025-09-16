@@ -1,0 +1,124 @@
+server:
+  port: 8080
+  servlet:
+    context-path: /api/v1
+
+spring:
+  application:
+    name: intelligent-policy-management
+  
+  # Database Configuration
+  datasource:
+    url: jdbc:h2:mem:testdb
+    driver-class-name: org.h2.Driver
+    username: sa
+    password: password
+  
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    show-sql: false
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.H2Dialect
+        format_sql: true
+  
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+  
+  # Redis Configuration
+  redis:
+    host: localhost
+    port: 6379
+    timeout: 2000ms
+    lettuce:
+      pool:
+        max-active: 8
+        max-idle: 8
+        min-idle: 0
+
+  # Security Configuration
+  security:
+    user:
+      name: admin
+      password: admin123
+      roles: ADMIN
+
+# OpenAI Configuration
+openai:
+  api:
+    key: ${OPENAI_API_KEY:your-openai-api-key-here}
+    timeout: 60
+
+# ISE Integration Configuration
+ise:
+  base-url: https://ise-mock.example.com
+  username: ise-admin
+  password: ise-password
+  timeout: 30000
+  retry-attempts: 3
+  pxgrid:
+    enabled: true
+    client-name: policy-management-service
+    description: Intelligent Policy Management Service
+
+# AI/ML Configuration
+ai:
+  risk-threshold: 0.7
+  anomaly-threshold: 0.8
+  learning-rate: 0.01
+  model-update-interval: 3600000 # 1 hour in milliseconds
+  features:
+    - user_behavior
+    - device_posture
+    - network_location
+    - time_of_access
+    - threat_intelligence
+
+# Policy Configuration
+policy:
+  simulation:
+    enabled: true
+    max-concurrent-simulations: 5
+  lifecycle:
+    auto-approval-threshold: 0.9
+    rollback-timeout: 300000 # 5 minutes
+  enforcement:
+    coa-enabled: true
+    quarantine-vlan: 999
+
+# Monitoring and Logging
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics,prometheus
+  endpoint:
+    health:
+      show-details: always
+  metrics:
+    export:
+      prometheus:
+        enabled: true
+
+logging:
+  level:
+    org.example: DEBUG
+    org.springframework.security: INFO
+    org.hibernate.SQL: DEBUG
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} - %msg%n"
+    file: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
+  file:
+    name: logs/policy-management.log
+
+# Custom Application Properties
+app:
+  name: Intelligent Policy Management
+  version: 1.0.0
+  description: Microservice for intelligent policy management with Cisco ISE integration
+  contact:
+    name: Policy Management Team
+    email: policy-team@example.com
